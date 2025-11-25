@@ -7,9 +7,12 @@ fn main() {
 
     std::io::stdin().read_line(&mut input).unwrap();
 
-    let re = Regex::new(r"^(19|20)?\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[-+]?[0-9]{4}$").unwrap();
+    input = input.trim().to_string();
 
-    if re.is_match(&input.trim()) {
+    let re =
+        Regex::new(r"^(19|20)?\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[-+]?[0-9]{4}$").unwrap();
+
+    if re.is_match(&input) {
         println!("Korrekt personnummer!");
     } else {
         println!("Ej korrekt personnummer.");
