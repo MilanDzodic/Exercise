@@ -13,8 +13,15 @@ fn main() {
         Regex::new(r"^(19|20)?\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[-+]?[0-9]{4}$").unwrap();
 
     if re.is_match(&input) {
+        luhn_check(&input);
         println!("Korrekt personnummer!");
     } else {
         println!("Ej korrekt personnummer.");
     }
+}
+
+fn luhn_check(personnummer: &str) -> bool {
+    println!("Testing luhn on: {}", personnummer);
+
+    return true;
 }
