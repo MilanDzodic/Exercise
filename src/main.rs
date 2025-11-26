@@ -13,7 +13,7 @@ fn main() {
         Regex::new(r"^(19|20)?\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[-+]?[0-9]{4}$").unwrap();
 
     if re.is_match(&input) {
-        input = format_personnummer(&input).to_string();
+        input = format_personnummer(&input);
         if luhn_check(&input) {
             println!("Korrekt personnummer!");
         }
