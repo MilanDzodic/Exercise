@@ -9,8 +9,10 @@ fn main() {
     input = input.trim().to_string();
 
     /* Regex pattern for Swedish Personnummer */
-    let re =
-        Regex::new(r"^(19|20)?\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[-+]?[0-9]{4}$").unwrap();
+    let re = Regex::new(
+        r"^(19|20)?\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01]|6[1-9]|[78]\d|9[01])[-+]?[0-9]{4}$",
+    )
+    .unwrap();
 
     /* Validate - Format - Luhn check */
     if re.is_match(&input) {
