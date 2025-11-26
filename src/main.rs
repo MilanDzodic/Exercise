@@ -66,7 +66,7 @@ fn format_personnummer(personnummer: &str) -> String {
 
     println!("clean personnummer: {}", clean_format);
 
-    /* Return String (Rust Ownership) */
+    /* Return String (Rust Ownership). */
     return clean_format.to_string();
 }
 
