@@ -1,4 +1,5 @@
 use regex::Regex;
+use std::io::{self, Write};
 use chrono::{NaiveDate, Datelike, Utc};
 
 fn validate_swedish_id(id: &str) -> Result<(), String> {
@@ -79,26 +80,42 @@ fn luhn_check(s: &str) -> bool {
 }
 
 fn main() {
-  let examples = [
-    "19900229-1234",
-    "20010631+4321",
-    "19100101-1237",
-    "19870604+6714",
-    "19870604-6714",
-    "198706046714",
-    "870604-6714",
-    "8706046714",
-    "8706046715",
-    "20006101-1234",
-    "19206101+1234",
-    "990229-1231",
-    "19206101-1234",
-  ];
+  loop {
+  print!("Ange personnummer att testa: ");
+    io::stdout().flush().unwrap();
 
-  for id in examples {
+    let mut id = String::new();
+    io::stdin()
+        .read_line(&mut id)
+        .expect("Fel vid läsning av input");  
+
+    let id = id.trim();
+
+  // let examples = [
+  //   "19900229-1234",
+  //   "20010631+4321",
+  //   "19100101-1237",
+  //   "19870604+6714",
+  //   "19870604-6714",
+  //   "198706046714",
+  //   "870604-6714",
+  //   "8706046714",
+  //   "8706046715",
+  //   "20006101-1234",
+  //   "19206101+1234",
+  //   "990229-1231",
+  //   "19206101-1234",
+  // ];
+
+  // for id in examples {
     match validate_swedish_id(id) {
-      Ok(_) => println!("{} är giltigt personnummer", id),
-      Err(e) => println!("{} är ogiltigt personnummer: {}", id, e),
+      Ok(_) => {
+        println!("{} är giltigt personnummer", id);
+        break;
+      }
+      Err(e) =>
+      println!("{} är ogiltigt personnummer: {}", id, e)
     }
-  }  
+  // }  
+  }
 }
