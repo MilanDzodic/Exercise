@@ -4,32 +4,24 @@ use chrono::{NaiveDate, Datelike, Utc};
 
 fn validate_swedish_id(id: &str) -> Result<(), String> {
   let re = Regex::new(
-    r"^(?:(?P<full>(?:19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01]|6[1-9]|[7-8]\d|9[0-1]))|(?P<short>\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01]|6[1-9]|[7-8]\d|9[0-1])))(?P<sep>[-+])?(?P<last>\d{4})$"
+  r"^(\d{2}|\d{4})(\d{2})(0[1-9]|[12]\d|3[01])([-+])?(\d{4})$"
   ).unwrap();
 
   let caps = re.captures(id).ok_or("Ogiltigt format")?;
 
-  // Hämta sep
-  let separator = caps.name("sep").map(|m| m.as_str()).unwrap_or("");
+  let year_str = caps.get(1).unwrap().as_str();
+  let month: u32 = caps.get(2).unwrap().as_str().parse().unwrap();
+  let mut day: u32 = caps.get(3).unwrap().as_str().parse().unwrap();
+  let separator = caps.get(4).map(|m| m.as_str()).unwrap_or("");
+  let _last_four = caps.get(5).unwrap().as_str();
 
-  // Plocka ut delar beroende på full/short format
-  let (year, month, mut day) = if let Some(full) = caps.name("full") {
-    let full = full.as_str();
-    (
-      full[0..4].parse().unwrap(),
-      full[4..6].parse().unwrap(),
-      full[6..8].parse().unwrap(),
-    )
+  // Fullt år
+  let year: i32 = if year_str.len() == 4 {
+    year_str.parse().unwrap()
   } else {
-    let short = caps.name("short").unwrap().as_str();
-    let yy: i32 = short[0..2].parse().unwrap();
-    let mm: u32 = short[2..4].parse().unwrap();
-    let dd: u32 = short[4..6].parse().unwrap();
-
+    let short_year: i32 = year_str.parse().unwrap();
     let current_year = Utc::now().year() % 100;
-    let full_year = if yy <= current_year { 2000 + yy } else { 1900 + yy };
-
-    (full_year, mm, dd)
+    if short_year <= current_year { 2000 + short_year } else { 1900 + short_year }
   };
 
   // Samordningsnummer (dag 61–91)
