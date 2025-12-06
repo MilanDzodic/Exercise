@@ -2,8 +2,8 @@
 name = "Exercise"
 version = "0.1.0"
 edition = "2024"
+readme = "README.md"
 
 [dependencies]
-regex = "1"
+regex = "1.12.1"
 chrono = "0.4.41"
-io = "0.0.2"
